@@ -20,12 +20,17 @@ public class Board {
         return columns;
     }
 
-    public Piece piece(int row, int columns) {
-        return pieces[row][columns];
+    public Piece piece(int row, int column) { // retorna a Piece que está nessa row e column
+        return pieces[row][column];
     }
 
-    public Piece piece(Position position) {
+    public Piece piece(Position position) { // retorna a Piece que está nessa position
         return pieces[position.getRow()][position.getColumn()];
+    }
+
+    public void placePiece(Piece piece, Position position){
+        pieces[position.getRow()][position.getColumn()] = piece; // coloca a piece no board
+        piece.position = position; //indica que essa piece esta nessa position
     }
 
 }
