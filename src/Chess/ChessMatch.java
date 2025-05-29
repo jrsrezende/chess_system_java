@@ -27,7 +27,7 @@ public class ChessMatch {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
     }
 
-    private void initialSetup() {
+    private void initialSetup() { // a peça é instanciada com o board do ChessMatch (8 x 8)
         placeNewPiece('a', 1, new Rook(board, Color.WHITE));
         placeNewPiece('d', 1, new King(board, Color.WHITE));
         placeNewPiece('h', 1, new Rook(board, Color.WHITE));
