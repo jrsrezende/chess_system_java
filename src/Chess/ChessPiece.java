@@ -1,7 +1,6 @@
 package Chess;
 
 import BoardGame.Board;
-import BoardGame.BoardException;
 import BoardGame.Piece;
 import BoardGame.Position;
 
@@ -36,10 +35,7 @@ public abstract class ChessPiece extends Piece {
     }
 
     protected boolean isThereOpponentPiece(Position position){
-        if (!board.positionExists(position)) {
-            throw new BoardException("Position not on the board");
-        }
-        ChessPiece p = (ChessPiece) board.piece(position);
+        ChessPiece p = (ChessPiece) getBoard().piece(position);
         return p != null && p.getColor() != color;
     }
 }
