@@ -18,11 +18,15 @@ public abstract class ChessPiece extends Piece {
         return color;
     }
 
+    public ChessPosition getChessPosition() {
+        return ChessPosition.fromPosition(position);
+    }
+
     protected boolean isThereOpponentPiece(Position position){
-        if (!getBoard().positionExists(position)) {
+        if (!board.positionExists(position)) {
             throw new BoardException("Position not on the board");
         }
-        ChessPiece p = (ChessPiece) getBoard().piece(position);
+        ChessPiece p = (ChessPiece) board.piece(position);
         return p != null && p.getColor() != color;
     }
 }
