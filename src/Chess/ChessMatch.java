@@ -250,9 +250,6 @@ public class ChessMatch {
         ChessPiece p = (ChessPiece) board.piece(source);
         Position kingPosition = king(color).getChessPosition().toPosition();
         List<Piece> opponentPieces = piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == opponent(color)).toList();
-        if (testCheck(currentPlayer) && target.getColumn() == source.getColumn() + 2 || testCheck(currentPlayer) && target.getColumn() == source.getColumn() - 2) {
-            throw new ChessException("You cannot castle while in check.");
-        }
         if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
             for (Piece opponent : opponentPieces) {
                 boolean[][] mat = opponent.possibleMoves();
