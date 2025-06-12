@@ -18,7 +18,7 @@ public class ChessMatch {
     private ChessPiece enPassantVulnerable;
     private ChessPiece promoted;
 
-    private List<Piece> piecesOnTheBoard = new ArrayList<>(); // essas 2 listas não são as listas que aparecem no terminal, as que aparecem no terminal estão na UI
+    private List<Piece> piecesOnTheBoard = new ArrayList<>(); // essas 2 listas não são as listas que aparecem no terminal, as que aparecem no terminal estão no Program
     private List<Piece> capturedPieces = new ArrayList<>();
 
     public ChessMatch() {
@@ -98,7 +98,7 @@ public class ChessMatch {
         return (ChessPiece) capturedPiece;
     }
 
-    public ChessPiece replacePromotedPiece(String type) {
+    public void replacePromotedPiece(String type) {
         Position pos = promoted.getChessPosition().toPosition();
         Piece p = board.removePiece(pos);
         piecesOnTheBoard.remove(p);
@@ -106,7 +106,6 @@ public class ChessMatch {
         ChessPiece newPiece = newPiece(type, promoted.getColor());
         board.placePiece(newPiece, pos);
         piecesOnTheBoard.add(newPiece);
-        return newPiece;
     }
 
     private ChessPiece newPiece(String type, Color color) {
