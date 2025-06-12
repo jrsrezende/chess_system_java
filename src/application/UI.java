@@ -46,6 +46,15 @@ public class UI {
         }
     }
 
+    public static String readNewPiece(Scanner sc) {
+        String type = sc.nextLine().toUpperCase();
+        while (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+            System.out.print("Invalid value! Enter piece for promotion (B/N/R/Q): ");
+            type = sc.nextLine().toUpperCase();
+        }
+        return type;
+    }
+
     public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {
         printBoard(chessMatch.getPieces());
         System.out.println();

@@ -16,6 +16,7 @@ public class ChessMatch {
     private boolean check;
     private boolean checkMate;
     private ChessPiece enPassantVulnerable;
+    private ChessPiece promoted;
 
     private List<Piece> piecesOnTheBoard = new ArrayList<>(); // essas 2 listas não são as listas que aparecem no terminal, as que aparecem no terminal estão na UI
     private List<Piece> capturedPieces = new ArrayList<>();
@@ -47,6 +48,10 @@ public class ChessMatch {
         return enPassantVulnerable;
     }
 
+    public ChessPiece getPromoted() {
+        return promoted;
+    }
+
     public ChessPiece[][] getPieces() { // o programa poderá enxergar a matriz de ChessPiece e não a de Pieces correspondente ao board
         ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
         for (int i = 0; i < board.getRows(); i++) {
@@ -75,7 +80,13 @@ public class ChessMatch {
             undoMove(source, target, capturedPiece);
             throw new ChessException("You cannot put yourself in check");
         }
-        ChessPiece movedPiece = (ChessPiece)board.piece(target);
+        ChessPiece movedPiece = (ChessPiece) board.piece(target);
+        //promotion
+        if (movedPiece instanceof Pawn && movedPiece.getColor() == Color.WHITE && target.getRow() == 0 || movedPiece instanceof Pawn && movedPiece.getColor() == Color.BLACK && target.getRow() == 7) {
+            promoted = (ChessPiece)board.piece(target);
+        } else {
+            promoted = null;
+        }
         check = testCheck(opponent(currentPlayer));
         if (testCheckMate(opponent(currentPlayer))) {
             checkMate = true;
@@ -85,6 +96,24 @@ public class ChessMatch {
         //en passant
         enPassantVulnerable = (movedPiece instanceof Pawn && (target.getRow() == source.getRow() - 2 || target.getRow() == source.getRow() + 2)) ? movedPiece : null;
         return (ChessPiece) capturedPiece;
+    }
+
+    public ChessPiece replacePromotedPiece(String type) {
+        Position pos = promoted.getChessPosition().toPosition();
+        Piece p = board.removePiece(pos);
+        piecesOnTheBoard.remove(p);
+
+        ChessPiece newPiece = newPiece(type, promoted.getColor());
+        board.placePiece(newPiece, pos);
+        piecesOnTheBoard.add(newPiece);
+        return newPiece;
+    }
+
+    private ChessPiece newPiece(String type, Color color) {
+        if (type.equals("B")) return new Bishop(board, color);
+        if (type.equals("N")) return new Knight(board, color);
+        if (type.equals("R")) return new Rook(board, color);
+        return new Queen(board, color);
     }
 
     private Piece makeMove(Position source, Position target) {
@@ -154,7 +183,7 @@ public class ChessMatch {
         }
         //en passant
         if (p instanceof Pawn && source.getColumn() != target.getColumn() && capturedPiece == enPassantVulnerable) {
-            ChessPiece pawn = (ChessPiece)board.removePiece(target);
+            ChessPiece pawn = (ChessPiece) board.removePiece(target);
             Position pawnPosition;
             if (p.getColor() == Color.WHITE) {
                 pawnPosition = new Position(3, target.getColumn());
@@ -185,11 +214,7 @@ public class ChessMatch {
 
     private void nextTurn() {
         turn++;
-        if (currentPlayer == Color.WHITE) {
-            currentPlayer = Color.BLACK;
-        } else {
-            currentPlayer = Color.WHITE;
-        }
+        currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     private Color opponent(Color color) {
