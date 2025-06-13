@@ -88,14 +88,15 @@ public class ChessMatch {
             promoted = null;
         }
         check = testCheck(opponent(currentPlayer));
-        if (testCheckMate(opponent(currentPlayer))) {
-            checkMate = true;
-        } else {
-            nextTurn();
-        }
+        checkMate = (testCheckMate(opponent(currentPlayer)));
         //en passant
         enPassantVulnerable = (movedPiece instanceof Pawn && (target.getRow() == source.getRow() - 2 || target.getRow() == source.getRow() + 2)) ? movedPiece : null;
         return (ChessPiece) capturedPiece;
+    }
+
+    public void nextTurn() {
+        turn++;
+        currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     public void replacePromotedPiece(String type) {
@@ -106,6 +107,7 @@ public class ChessMatch {
         ChessPiece newPiece = newPiece(type, promoted.getColor());
         board.placePiece(newPiece, pos);
         piecesOnTheBoard.add(newPiece);
+        check = testCheck(opponent(currentPlayer));
     }
 
     private ChessPiece newPiece(String type, Color color) {
@@ -210,12 +212,7 @@ public class ChessMatch {
             throw new ChessException("The chosen piece can't move to target position");
         }
     }
-
-    private void nextTurn() {
-        turn++;
-        currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
-    }
-
+    
     private Color opponent(Color color) {
         if (color == Color.WHITE) {
             return Color.BLACK;
