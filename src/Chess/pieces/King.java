@@ -84,7 +84,7 @@ public class King extends ChessPiece {
         }
 
         //roque
-        if (getMoveCount() == 0 && !chessMatch.getCheck()) {
+        if (getMoveCount() == 0) {
             //roque pequeno
             Position pT1 = new Position(position.getRow(), position.getColumn() + 3);
             if (testRookCastling(pT1)) {

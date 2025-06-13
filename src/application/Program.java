@@ -45,7 +45,6 @@ public class Program {
                     String type = UI.readNewPiece(sc);
                     chessMatch.replacePromotedPiece(type);
                 }
-                chessMatch.nextTurn();
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage());
                 sc.nextLine();
